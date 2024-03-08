@@ -20,17 +20,18 @@ import nghiepnlt.util.DBHelper;
  * @author tanng
  */
 public class RegistrationDAO implements Serializable{
-    public boolean checkLogin(String username, String password) throws SQLException, ClassNotFoundException, NamingException{
+//    public boolean checkLogin(String username, String password) throws SQLException, ClassNotFoundException, NamingException
+    public RegistrationDTO checkLogin(String username, String password) throws SQLException, ClassNotFoundException, NamingException{
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        boolean result = false;
+        RegistrationDTO result = null;
         try {
             //1. get connection
             con = DBHelper.makeConnection();
             if (con != null){
                 //2. create SQL string
-                String sql = "Select username "
+                String sql = "Select lastname,isAdmin "
                         + "from Registration "
                         + "where username = ? and password = ?";
                 //3. Create Statement object
@@ -41,8 +42,10 @@ public class RegistrationDAO implements Serializable{
                 rs = stm.executeQuery();
                 //5. Process result
                 if (rs.next()){
-                    result = true;
-                }// username and password is authenticated
+                    String fullName = rs.getString("lastname");
+                    boolean role = rs.getBoolean("isAdmin");
+                    result = new RegistrationDTO(username, null, fullName, role);
+                }// username and password is
             }// end connection has been available
         }
         finally{
@@ -173,6 +176,47 @@ public class RegistrationDAO implements Serializable{
             }// end connection has been available
         }
         finally{
+            if (stm != null){
+                stm.close();
+            }
+            if (con != null){
+                con.close();
+            }
+        }
+        return result;
+    }
+    
+    public boolean createAccount(RegistrationDTO account) throws SQLException, NamingException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        boolean result = false;
+        try {
+            //1. get connection
+            con = DBHelper.makeConnection();
+            if (con != null){
+                //2. create SQL string
+                String sql = "Insert into Registration"
+                        + "(username, password, lastname, isAdmin) "
+                        + "values (?,?,?,?)";
+                //3. Create Statement object
+                stm = con.prepareStatement(sql);
+                stm.setString(1, account.getUsername());
+                stm.setString(2, account.getPassword());
+                stm.setString(3, account.getFullName());
+                stm.setBoolean(4, account.getRole());
+                //4. Execute query
+                int effectedRow = stm.executeUpdate();
+                //5. Process result
+                if (effectedRow > 0){
+                    result = true;
+                }
+            }// end connection has been available
+        }
+        finally{
+            if (rs != null){
+                rs.close();
+            }
             if (stm != null){
                 stm.close();
             }

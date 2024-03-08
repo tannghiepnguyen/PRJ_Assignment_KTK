@@ -22,6 +22,7 @@ import nghiepnlt.util.DBHelper;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
+import nghiepnlt.registration.RegistrationDTO;
 
 /**
  *
@@ -55,17 +56,17 @@ public class LoginServlet extends HttpServlet {
             //2.1 new DAO
             RegistrationDAO dao = new RegistrationDAO();
             //2.2 Call method of DAO
-            boolean result = dao.checkLogin(username, password);
+            //boolean result = dao.checkLogin(username, password);
+            RegistrationDTO result = dao.checkLogin(username, password);
             //3. Process
-            if (result) {
+            if (result != null) {
                 url = SEARCH_PAGE;
                 //sending cookie to client
 //                Cookie cookie = new Cookie(username, password);
 //                cookie.setMaxAge(3 * 60);
 //                response.addCookie(cookie);
                 HttpSession session = request.getSession();
-                session.setAttribute("username", username);
-                session.setAttribute("password", password);
+                session.setAttribute("USER", result);
                 
             }// end user clicked Login button
         } catch (ClassNotFoundException ex) {

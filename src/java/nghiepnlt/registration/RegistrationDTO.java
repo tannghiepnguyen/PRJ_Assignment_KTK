@@ -73,7 +73,7 @@ public class RegistrationDTO implements Serializable{
     /**
      * @return the role
      */
-    public boolean isRole() {
+    public boolean getRole() {
         return role;
     }
 
