@@ -52,9 +52,9 @@ public class DeleteAccountServlet extends HttpServlet {
                         + "&txtSearchValue=" + searchValue;
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            log("SQL: " + ex.getMessage());
         } catch (NamingException ex) {
-            ex.printStackTrace();
+            log("Naming: " + ex.getMessage());
         } finally {
             //forward issue because duplicate name
             response.sendRedirect(url);

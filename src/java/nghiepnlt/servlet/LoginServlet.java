@@ -69,12 +69,12 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("USER", result);
                 
             }// end user clicked Login button
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            log("SQL: " + ex.getMessage());
         } catch (NamingException ex) {
-            ex.printStackTrace();
+            log("Naming: " + ex.getMessage());
+        } catch (ClassNotFoundException ex) {
+            log("ClassNotFound: " + ex.getMessage());
         } finally {
             //response.sendRedirect(url);
             RequestDispatcher rd = request.getRequestDispatcher(url);

@@ -58,11 +58,11 @@ public class SearchLastnameServlet extends HttpServlet {
             } 
         } 
         catch (SQLException ex) {
-            ex.printStackTrace();
+            log("SQL: " + ex.getMessage());
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+            log("ClassNotFound: " + ex.getMessage());
         } catch (NamingException ex) {
-            ex.printStackTrace();
+            log("Naming: " + ex.getMessage());
         } finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

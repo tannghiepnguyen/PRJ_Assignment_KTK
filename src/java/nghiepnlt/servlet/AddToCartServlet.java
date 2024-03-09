@@ -53,9 +53,9 @@ public class AddToCartServlet extends HttpServlet {
             //4. Customer continue goes shopping
             
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            log("SQL: " + ex.getMessage());
         } catch (NamingException ex) {
-            ex.printStackTrace();
+            log("Naming: " + ex.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher("DispatchServlet?btnAction=GetProductList");
             rd.forward(request, response);

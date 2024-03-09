@@ -81,9 +81,9 @@
                     </c:forEach>
                 </tbody>
             </table>
-        </c:if>
-        <c:if test="${empty result}">
-            <h2 style="color: red">No records</h2>
+            <c:if test="${empty result}">
+                <h2 style="color: red">No records</h2>
+            </c:if>
         </c:if>
     </c:if>
     <%--    <% 

@@ -26,6 +26,7 @@ import nghiepnlt.product.ProductDTO;
  */
 public class GetProductListServlet extends HttpServlet {
     private final String PRODUCT_PAGE = "product.jsp";
+    private final String ERROR_PAGE = "errors.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,16 +39,19 @@ public class GetProductListServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = PRODUCT_PAGE;
+        String url = ERROR_PAGE;
          try {
             ProductDAO dao = new ProductDAO();
             dao.getAllProductList();
             List<ProductDTO> list = dao.getProductList();
-            request.setAttribute("list", list);
+            if (list != null){
+                request.setAttribute("list", list);
+                url = PRODUCT_PAGE;
+            }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            log("SQL: " + ex.getMessage());
         } catch (NamingException ex) {
-            ex.printStackTrace();
+            log("Naming: " + ex.getMessage());
         }
          finally{
             RequestDispatcher rd = request.getRequestDispatcher(url);
